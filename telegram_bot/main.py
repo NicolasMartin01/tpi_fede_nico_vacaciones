@@ -1,6 +1,10 @@
 import logging
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     Application,
@@ -12,13 +16,14 @@ from telegram.ext import (
     filters,
 )
 
-from archivos import buscar_empleado, cambiar_estado, crear_archivos, descontar_dias, guardar_solicitud
+from archivos import buscar_empleado, cambiar_estado, crear_archivos, descontar_dias, guardar_solicitud, verificar_contrasena
 from constantes import (
     ESTADO_APROBADA,
     ESTADO_EMPLEADO_INEXISTENTE,
     ESTADO_PENDIENTE,
     ESTADO_RECHAZADA_SALDO,
     ESTADO_RECHAZADA_SUPERVISOR,
+    PEDIR_CONTRASENA,
     PEDIR_DIAS,
     PEDIR_LEGAJO,
 )
@@ -51,6 +56,18 @@ async def recibir_legajo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         return ConversationHandler.END
 
     context.user_data["empleado"] = empleado
+    await update.message.reply_text("Ingrese su contraseña:")
+    return PEDIR_CONTRASENA
+
+
+async def recibir_contrasena(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    contrasena = update.message.text.strip()
+    empleado = context.user_data["empleado"]
+
+    if not verificar_contrasena(empleado, contrasena):
+        await update.message.reply_text("Contraseña incorrecta. Operación cancelada.")
+        return ConversationHandler.END
+
     await update.message.reply_text(
         f"Empleado: {empleado['nombre']}\n"
         f"Días disponibles: {empleado['dias_disponibles']}\n\n"
@@ -135,6 +152,7 @@ def main() -> None:
         entry_points=[CommandHandler("start", start)],
         states={
             PEDIR_LEGAJO: [MessageHandler(filters.TEXT & ~filters.COMMAND, recibir_legajo)],
+            PEDIR_CONTRASENA: [MessageHandler(filters.TEXT & ~filters.COMMAND, recibir_contrasena)],
             PEDIR_DIAS: [MessageHandler(filters.TEXT & ~filters.COMMAND, recibir_dias)],
         },
         fallbacks=[CommandHandler("cancelar", cancelar)],
@@ -146,4 +164,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    import asyncio
+    asyncio.set_event_loop(asyncio.new_event_loop())
     main()

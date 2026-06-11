@@ -107,6 +107,11 @@ def buscar_empleado(legajo):
   return None
 
 
+def verificar_contrasena(empleado, contrasena):
+  """Verifica que la contraseña coincida con la del empleado."""
+  return empleado["contrasena"] == contrasena
+
+
 def proximo_id():
   """Devuelve el proximo id de solicitud."""
   try:
