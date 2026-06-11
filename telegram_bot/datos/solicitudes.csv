@@ -1,0 +1,8 @@
+id,legajo,nombre,dias,estado,observacion
+1,1001,Federico Moretto,5,RECHAZADA_SUPERVISOR,El supervisor rechazó la solicitud.
+2,101,Empleado inexistente,0,EMPLEADO_INEXISTENTE,El legajo no existe.
+3,1001,Federico Moretto,4,RECHAZADA_SUPERVISOR,El supervisor rechazó la solicitud.
+4,1002,Nicolas Martin,4,APROBADA,El supervisor aprobó la solicitud.
+5,1001,Federico Moretto,10,APROBADA,El supervisor aprobó la solicitud.
+6,1001,Federico Moretto,5,RECHAZADA_SALDO,Saldo insuficiente.
+7,1001,Federico Moretto,4,APROBADA,El supervisor aprobó la solicitud.
