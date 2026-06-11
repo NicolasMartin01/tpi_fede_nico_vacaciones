@@ -6,3 +6,5 @@ id,legajo,nombre,dias,estado,observacion
 5,1001,Federico Moretto,10,APROBADA,El supervisor aprobó la solicitud.
 6,1001,Federico Moretto,5,RECHAZADA_SALDO,Saldo insuficiente.
 7,1001,Federico Moretto,4,APROBADA,El supervisor aprobó la solicitud.
+8,1001,Federico Moretto,1,RECHAZADA_SALDO,Saldo insuficiente.
+9,1002,Nicolas Martin,1,APROBADA,El supervisor aprobó la solicitud.
