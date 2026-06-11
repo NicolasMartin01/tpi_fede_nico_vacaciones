@@ -1,4 +1,4 @@
-legajo,nombre,dias_disponibles
-1001,Federico Moretto,0
-1002,Juan Perez,5
-1003,Lucia Gomez,20
+legajo,nombre,dias_disponibles,contrasena
+1001,Federico Moretto,0,fede123
+1002,Juan Perez,5,nico456
+1003,Lucia Gomez,20,lucia789
