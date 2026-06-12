@@ -5,37 +5,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project
 
 TPI (Trabajo Práctico Integrador) for Organización Empresarial — TUPaD.  
-Simulates a vacation-request chatbot modeled after a BPMN 2.0 TO-BE process.  
+Telegram bot for vacation-request management, modeled after a BPMN 2.0 TO-BE process.  
 Authors: Federico Moretto, Nicolás Martín.
 
-## Running the chatbot
+## Running the bot
 
 ```bash
-cd codigo
+pip install -r requirements.txt
+cp .env.example .env   # fill in BOT_TOKEN and SUPERVISOR_CHAT_ID
 python main.py
 ```
 
-The script must be run from inside `codigo/` because file paths in `constantes.py` are relative (`datos/empleados.csv`, `datos/solicitudes.csv`).
-
 ## Architecture
 
-The code lives entirely in `codigo/` with no external dependencies beyond the Python standard library.
+All code lives in the repository root.
 
 | File | Role |
 |---|---|
-| `main.py` | Entry point. Orchestrates the BPMN flow: validate employee → check balance → save request → supervisor decision → approve/reject. |
+| `main.py` | Entry point. Sets up the Telegram bot, conversation handlers, and orchestrates the BPMN flow. |
 | `archivos.py` | All CSV I/O: create files, seed initial employees, read/write employees and requests. |
-| `constantes.py` | Paths, CSV headers, seed data, and request-state string constants. |
-| `validaciones.py` | Input helpers (`pedir_legajo`, `pedir_numero`, `pedir_respuesta`) that loop until valid input is received. |
+| `constantes.py` | Paths (relative to `__file__`), CSV headers, seed data, request-state constants, and conversation states. |
 
-**Data layer:** two CSV files under `codigo/datos/` — `empleados.csv` (legajo, nombre, dias_disponibles) and `solicitudes.csv` (id, legajo, nombre, dias, estado, observacion). `crear_archivos()` seeds them on first run. To reset state, delete or empty both CSVs.
+**Data layer:** two CSV files under `datos/` — `empleados.csv` and `solicitudes.csv`. Seeded automatically on first run. To reset state, delete both CSVs.
 
 **Request states:** `PENDIENTE` → `APROBADA` or `RECHAZADA_SUPERVISOR`; immediate rejections use `RECHAZADA_SALDO` or `EMPLEADO_INEXISTENTE`.
 
-## Repository layout
-
-```
-bpmn/       BPMN 2.0 diagrams (AS-IS / TO-BE) in .drawio and Excalidraw formats
-codigo/     Python chatbot simulator
-docs/       Project brief (PDF)
-```
+**Environment variables:** `BOT_TOKEN` and `SUPERVISOR_CHAT_ID` must be set in `.env` (see `.env.example`).

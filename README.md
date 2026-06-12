@@ -1,64 +1,92 @@
-# Trabajo Practico Integrador - Organizacion Empresarial
+# Chatbot de Vacaciones — Telegram
 
-## Integrantes
+Versión Telegram del simulador de gestión de vacaciones. El empleado interactúa con el bot, y el supervisor recibe la solicitud en un chat separado con botones para aprobar o rechazar.
 
-* Federico Moretto
-* Nicolas Martin
+## Requisitos
 
-## Descripcion
+- Python 3.10 o superior
+- Cuenta de Telegram
+- Acceso a [@BotFather](https://t.me/BotFather) para crear el bot
 
-El presente proyecto tiene como objetivo analizar y automatizar un proceso administrativo mediante la utilizacion de un chatbot.
+## Instalación
 
-Para el desarrollo del trabajo se selecciono el proceso de gestion de vacaciones dentro de una empresa ficticia, modelando el flujo actual (AS-IS) y el flujo mejorado (TO-BE) mediante BPMN 2.0.
-
-Posteriormente se desarrollara una simulacion funcional que permita representar el comportamiento del chatbot y las distintas decisiones involucradas en el proceso.
-
-## Objetivos
-
-* Analizar el proceso actual de gestion de vacaciones.
-* Identificar problemas e ineficiencias.
-* Modelar el proceso actual (AS-IS).
-* Diseñar el proceso optimizado (TO-BE).
-* Representar el flujo mediante BPMN 2.0.
-* Simular el funcionamiento de un chatbot.
-* Documentar el analisis y los resultados obtenidos.
-
-## Tecnologias y herramientas
-
-* Python
-* Excalidraw
-* GitHub
-
-## Estado del proyecto
-
-### Completado
-
-* Seleccion del proceso administrativo.
-* Definicion inicial del alcance.
-
-### En progreso
-
-* Definicion de la organizacion.
-* Analisis del proceso actual.
-
-### Pendiente
-
-* BPMN AS-IS.
-* BPMN TO-BE.
-* Desarrollo del simulador.
-* Pruebas.
-* Documentacion final.
-
-## Estructura del repositorio
-
-```text
-docs/          -> Documentacion del proyecto
-bpmn/          -> Diagramas BPMN
-imagenes/      -> Capturas e imagenes utilizadas
-codigo/        -> Simulador del chatbot
-presentacion/  -> Material para la defensa
+```bash
+pip install -r requirements.txt
 ```
 
-## Observaciones
+## Configuración
 
-Este repositorio se encuentra en etapa de analisis y diseño. La estructura y documentacion podran modificarse a medida que avance el desarrollo del trabajo.
+### 1. Obtener el BOT_TOKEN
+
+1. Abrí Telegram y buscá **@BotFather**.
+2. Enviá el comando `/newbot`.
+3. Seguí las instrucciones: elegí un nombre y un username para el bot (debe terminar en `bot`, ej: `vacaciones_tpi_bot`).
+4. BotFather te va a responder con un token con este formato:
+   ```
+   123456789:AAFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   ```
+5. Copiá ese token, ese es tu `BOT_TOKEN`.
+
+### 2. Obtener el SUPERVISOR_CHAT_ID
+
+El `SUPERVISOR_CHAT_ID` es el ID numérico del chat (personal o grupo) donde el supervisor va a recibir las solicitudes.
+
+**Para un chat personal:**
+1. Buscá **@userinfobot** en Telegram.
+2. Enviále cualquier mensaje.
+3. Te va a responder con tu ID numérico (ej: `987654321`).
+
+**Para un grupo:**
+1. Agregá el bot al grupo.
+2. Enviá cualquier mensaje en el grupo.
+3. Abrí en el navegador:
+   ```
+   https://api.telegram.org/bot<BOT_TOKEN>/getUpdates
+   ```
+4. En la respuesta JSON buscá `"chat": {"id": ...}` dentro del mensaje del grupo. El ID de grupos es negativo (ej: `-1001234567890`).
+
+### 3. Crear el archivo .env
+
+Copiá el archivo de ejemplo y completá los valores:
+
+```bash
+cp .env.example .env
+```
+
+Editá `.env`:
+
+```
+BOT_TOKEN=123456789:AAFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+SUPERVISOR_CHAT_ID=987654321
+```
+
+## Ejecutar el bot
+
+```bash
+python main.py
+```
+
+El bot queda corriendo. Para detenerlo usá `Ctrl+C`.
+
+## Flujo del bot
+
+1. El empleado inicia la conversación con `/start`.
+2. El bot pide el legajo y valida que exista.
+3. El bot muestra los días disponibles y pide la cantidad a solicitar.
+4. Si hay saldo suficiente, la solicitud queda en estado `PENDIENTE` y se notifica al supervisor.
+5. El supervisor recibe el mensaje con botones **Aprobar** / **Rechazar**.
+6. El empleado recibe la respuesta final del supervisor.
+
+Para cancelar en cualquier momento: `/cancelar`.
+
+## Datos de prueba
+
+Los empleados de ejemplo cargados al iniciar son:
+
+| Legajo | Nombre           | Días disponibles |
+|--------|------------------|-----------------|
+| 1001   | Federico Moretto | 14              |
+| 1002   | Nicolas Martin   | 5               |
+| 1003   | Lucia Gomez      | 20              |
+
+Para resetear los datos, eliminá los archivos `datos/empleados.csv` y `datos/solicitudes.csv`. Se van a regenerar al iniciar el bot.

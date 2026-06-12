@@ -1,7 +1,0 @@
-id,legajo,nombre,dias,estado,observacion
-1,1001,Federico Moretto,5,RECHAZADA_SUPERVISOR,El supervisor rechazo la solicitud.
-2,1001,Federico Moretto,15,APROBADA,El supervisor aprobo la solicitud.
-3,1001,Federico Moretto,10,APROBADA,El supervisor aprobo la solicitud.
-4,1001,Federico Moretto,12,RECHAZADA_SALDO,Saldo insuficiente.
-5,1001,Federico Moretto,5,APROBADA,El supervisor aprobo la solicitud.
-6,1001,Federico Moretto,5,APROBADA,El supervisor aprobo la solicitud.
