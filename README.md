@@ -65,14 +65,34 @@ python main.py
 
 El bot queda corriendo. Para detenerlo usá `Ctrl+C`.
 
-## Uso
+## Flujo de la aplicación
 
-1. El empleado inicia la conversación con `/start`.
-2. El bot pide el legajo y la contraseña.
-3. El bot muestra los días disponibles y pide la cantidad a solicitar.
-4. Si hay saldo suficiente, la solicitud queda en estado `PENDIENTE` y se notifica al supervisor.
-5. El supervisor recibe el mensaje con botones **Aprobar** / **Rechazar**.
-6. El empleado recibe la respuesta final.
+El bot implementa el proceso de gestión de vacaciones con dos actores: el **empleado** y el **supervisor**.
+
+### Lado del empleado
+
+1. El empleado inicia la conversación enviando `/start`.
+2. El bot solicita el **legajo**. Si no existe en el sistema, registra el intento como `EMPLEADO_INEXISTENTE` y finaliza.
+3. El bot solicita la **contraseña**. Si es incorrecta, cancela la operación.
+4. El bot muestra el nombre del empleado y sus **días disponibles**, y pide la cantidad de días a solicitar.
+5. Si los días solicitados superan el saldo disponible, la solicitud se registra como `RECHAZADA_SALDO` y finaliza.
+6. Si hay saldo suficiente, la solicitud se guarda como `PENDIENTE` y el empleado recibe confirmación de que está a la espera de aprobación.
+
+### Lado del supervisor
+
+7. El supervisor recibe un mensaje en su chat con los datos de la solicitud (ID, nombre, legajo, días) y dos botones: **✅ Aprobar** y **❌ Rechazar**.
+8. Si aprueba: los días se descuentan del saldo del empleado, la solicitud pasa a `APROBADA` y el empleado recibe una notificación de aprobación.
+9. Si rechaza: la solicitud pasa a `RECHAZADA_SUPERVISOR` y el empleado recibe una notificación de rechazo.
+
+### Estados posibles de una solicitud
+
+| Estado                  | Descripción                                      |
+|-------------------------|--------------------------------------------------|
+| `PENDIENTE`             | Enviada al supervisor, esperando respuesta       |
+| `APROBADA`              | Aprobada por el supervisor                       |
+| `RECHAZADA_SUPERVISOR`  | Rechazada por el supervisor                      |
+| `RECHAZADA_SALDO`       | Rechazada automáticamente por saldo insuficiente |
+| `EMPLEADO_INEXISTENTE`  | El legajo ingresado no existe en el sistema      |
 
 Para cancelar en cualquier momento: `/cancelar`.
 
