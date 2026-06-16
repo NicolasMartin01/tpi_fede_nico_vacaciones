@@ -1,6 +1,8 @@
 # Chatbot de Vacaciones — Telegram
 
-Bot de Telegram para gestión de solicitudes de vacaciones. El empleado interactúa con el bot y el supervisor recibe la solicitud con botones para aprobar o rechazar.
+Proyecto desarrollado para el Trabajo Practico Integrador de Organizacion Empresarial.
+
+La solucion automatiza el proceso de solicitud de vacaciones mediante un chatbot de Telegram, permitiendo validar empleados, registrar solicitudes y gestionar la aprobacion o rechazo por parte de un supervisor.
 
 ## Requisitos previos
 
@@ -105,3 +107,7 @@ Para cancelar en cualquier momento: `/cancelar`.
 | 1003   | Lucia Gomez      | lucia789   | 20              |
 
 Para resetear los datos, eliminá `datos/empleados.csv` y `datos/solicitudes.csv`. Se regeneran al iniciar el bot.
+
+## Capturas de pantalla
+
+En la carpeta assets se encuentran las capturas de pantalla de las interacciones realizadas con ChatGPT utilizadas durante el desarrollo del trabajo. Se incluyen por separado para evitar aumentar el tamaño del documento principal.
