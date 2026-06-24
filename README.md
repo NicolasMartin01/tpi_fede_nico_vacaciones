@@ -6,32 +6,50 @@ La solucion automatiza el proceso de solicitud de vacaciones mediante un chatbot
 
 ## Requisitos previos
 
-- Python 3.10 o superior
+- Python 3.10 o superior **— o Docker** (ver sección [Ejecutar con Docker](#ejecutar-con-docker))
 - Cuenta de Telegram
 - Un bot creado en [@BotFather](https://t.me/BotFather)
 
 ## Instalación
 
-Cloná el repositorio e instalá las dependencias:
+Cloná el repositorio (igual en todas las plataformas):
 
 ```bash
 git clone https://github.com/NicolasMartin01/tpi_fede_nico_vacaciones.git
 cd tpi_fede_nico_vacaciones
+```
+
+Instalá las dependencias:
+
+**Linux / macOS**:
+```bash
+pip3 install -r requirements.txt
+```
+
+**Windows**:
+```cmd
 pip install -r requirements.txt
 ```
+
+> En Windows, Python se instala como `python` / `pip`. En Linux y macOS coexisten con Python 2, por eso se usa `python3` / `pip3`.
 
 ## Configuración
 
 ### 1. Crear el archivo .env
 
-Copiá el archivo de ejemplo:
-
+**Linux / macOS**:
 ```bash
-# Linux / macOS
 cp .env.example .env
+```
 
-# Windows
+**Windows — CMD**:
+```cmd
 copy .env.example .env
+```
+
+**Windows — PowerShell**:
+```powershell
+Copy-Item .env.example .env
 ```
 
 ### 2. Completar las variables de entorno
@@ -61,11 +79,82 @@ Buscá `"chat": {"id": ...}` en la respuesta. Los IDs de grupo son negativos (ej
 
 ## Ejecutar el bot
 
+**Linux / macOS**:
 ```bash
+python3 main.py
+```
+
+**Windows**:
+```cmd
 python main.py
 ```
 
 El bot queda corriendo. Para detenerlo usá `Ctrl+C`.
+
+## Ejecutar con Docker
+
+Esta opción no requiere tener Python instalado en la máquina.
+
+### 1. Construir la imagen
+
+El comando es igual en todas las plataformas:
+
+```bash
+docker build -t bot-vacaciones .
+```
+
+### 2. Ejecutar el contenedor
+
+La única diferencia entre plataformas está en cómo se escribe la ruta del volumen (`-v`).
+
+**Linux / macOS** (Terminal):
+```bash
+docker run --env-file .env -v ./datos:/app/datos bot-vacaciones
+```
+
+**Windows — PowerShell**:
+```powershell
+docker run --env-file .env -v ${PWD}/datos:/app/datos bot-vacaciones
+```
+
+**Windows — CMD**:
+```cmd
+docker run --env-file .env -v %cd%/datos:/app/datos bot-vacaciones
+```
+
+- `--env-file .env` — inyecta las variables de entorno sin incluirlas en la imagen.
+- `-v <ruta>/datos:/app/datos` — monta la carpeta `datos/` como volumen para que los CSVs persistan entre reinicios.
+
+### 3. Ejecutar en segundo plano (opcional)
+
+**Linux / macOS**:
+```bash
+docker run -d --name bot-vacaciones --env-file .env -v ./datos:/app/datos bot-vacaciones
+```
+
+**Windows — PowerShell**:
+```powershell
+docker run -d --name bot-vacaciones --env-file .env -v ${PWD}/datos:/app/datos bot-vacaciones
+```
+
+**Windows — CMD**:
+```cmd
+docker run -d --name bot-vacaciones --env-file .env -v %cd%/datos:/app/datos bot-vacaciones
+```
+
+El flag `-d` ejecuta el contenedor en segundo plano (no bloquea la terminal).
+
+Para ver los logs (igual en todas las plataformas):
+```bash
+docker logs -f bot-vacaciones
+```
+
+Para detenerlo (igual en todas las plataformas):
+```bash
+docker stop bot-vacaciones
+```
+
+> **Nota:** si cambiás el `.env`, no es necesario reconstruir la imagen. Alcanza con detener el contenedor y volver a ejecutarlo.
 
 ## Flujo de la aplicación
 
