@@ -1,4 +1,4 @@
-# Chatbot de Vacaciones — Telegram
+# Selenium SRL - Chatbot de Vacaciones — Telegram
 
 Proyecto desarrollado para el Trabajo Practico Integrador de Organizacion Empresarial.
 
